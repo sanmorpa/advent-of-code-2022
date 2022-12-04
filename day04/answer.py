@@ -26,3 +26,24 @@ for pair in pairs:
 		total2 += 1
 
 print(f"The number of pairs that have at least partial overlap is: {total2}")
+# Data ingestion and processing
+with open('input.txt') as file:
+	lines = [line.rstrip() for line in file]
+# Data ingestion and processing
+with open('input.txt') as file:
+	lines = [line.rstrip() for line in file]
+# Data ingestion and processing
+with open('input.txt') as file:
+	lines = [line.rstrip() for line in file]
+# Data ingestion and processing
+with open('input.txt') as file:
+	lines = [line.rstrip() for line in file]
+# Data ingestion and processing
+with open('input.txt') as file:
+	lines = [line.rstrip() for line in file]
+# Data ingestion and processing
+with open('input.txt') as file:
+	lines = [line.rstrip() for line in file]
+# Data ingestion and processing
+with open('input.txt') as file:
+	lines = [line.rstrip() for line in file]
