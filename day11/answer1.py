@@ -64,11 +64,10 @@ while i < 20:
 first = 0
 second = 0
 for monkey in monkeys:
-	print(monkey)
 	if monkey['inspected'] > first:
 		second = first
 		first = monkey['inspected']
 	else:
 		if monkey['inspected'] > second:
 			second = monkey['inspected']
-print(first, second, first * second)
+print(f"The level of monkey business after 20 rounds is {first * second}")
