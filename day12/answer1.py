@@ -26,7 +26,7 @@ def select_adjacent(nodes, i, j):
 			return node
 	return -1
 
-def find_smallest(nodes, shortest):
+def find_smallest(nodes):
 	size = math.inf
 	smallest = -1
 	for node in range(len(nodes)):
@@ -35,19 +35,61 @@ def find_smallest(nodes, shortest):
 			smallest = node
 	return smallest
 
+def in_path(to_print, i, j):
+	for item in to_print:
+		if item['coord']['y'] == i and item['coord']['x'] == j:
+			return True
+	return False
+
+def printing(map, to_print):
+	for line in range(len(map)):
+		for item in range(len(map[line])):
+			if line == start[1] and item == start[0]:
+				prints = 'S'
+			elif line == end[1] and item == end[0]:
+				prints = 'E'
+			else:
+				prints = chr(map[line][item] + 96)
+			if in_path(to_print, line, item) == True:
+				print(f"\033[92m{prints}\033[0m", end=" ")
+			else:
+				print(f"{prints}", end=" ")
+		print()
+
+def all_visited(nodes):
+	for node in nodes:
+		if node['visited'] == False:
+			return False
+	return True
+
+def dijkstra(nodes, now):
+	while all_visited(nodes) == False:
+		for node in now['adjacent']:
+			i = select_adjacent(nodes, node[0], node[1])
+			if i > -1:
+				if nodes[i]['distance'] > (now['distance'] + 1):
+					nodes[i]['distance'] = now['distance'] + 1
+					nodes[i]['previous'] = nodes.index(now)
+		nodes[nodes.index(now)]['visited'] = True
+		small = find_smallest(nodes)
+		if small == -1:
+			break
+		now = nodes[small]
+	return nodes
+
 # Data ingestion and processing
 with open('input.txt') as file:
 	lines = [line.rstrip() for line in file]
 
 map = [[ord(item) - 96 if item.islower() else item for item in line] for line in lines]
 
-coords = list()
+start = list()
 end = list()
 for line in range(len(map)):
 	for item in range(len(map[line])):
 		if map[line][item] == 'S':
-			coords.append(item)
-			coords.append(line)
+			start.append(item)
+			start.append(line)
 			map[line][item] = 1
 		elif map[line][item] == 'E':
 			end.append(item)
@@ -59,7 +101,7 @@ nodes = list()
 for i in range(len(map)):
 	for j in range(len(map[i])):
 		node = dict()
-		if i == coords[1] and j == coords[0]:
+		if i == start[1] and j == start[0]:
 			node['distance'] = 0
 		else:
 			node['distance'] = math.inf
@@ -74,27 +116,7 @@ for node in range(len(nodes)):
 		now = nodes[node]
 		break
 
-shortest_path = list()
-
-def all_visited(nodes):
-	for node in nodes:
-		if node['visited'] == False:
-			return False
-	return True
-
-while all_visited(nodes) == False:
-	for node in now['adjacent']:
-		i = select_adjacent(nodes, node[0], node[1])
-		if i > -1:
-			if nodes[i]['distance'] > (now['distance'] + 1):
-				nodes[i]['distance'] = now['distance'] + 1
-				nodes[i]['previous'] = nodes.index(now)
-	nodes[nodes.index(now)]['visited'] = True
-	shortest_path.append(nodes[nodes.index(now)])
-	small = find_smallest(nodes, shortest_path)
-	if small == -1:
-		break
-	now = nodes[small]
+nodes = dijkstra(nodes, now)
 
 final = None
 for node in nodes:
@@ -108,22 +130,13 @@ while final['previous'] != None:
 	to_print.append(final)
 to_print.append(final)
 
-def printing(to_print, i, j):
-	for item in to_print:
-		if item['coord']['y'] == i and item['coord']['x'] == j:
-			return True
-	return False
-
-k = 0
-j = 1
+j = -1 # Minus one to substract the ending node
 for line in range(len(map)):
 	for item in range(len(map[line])):
-		if printing(to_print, line, item):
+		if in_path(to_print, line, item) == True:
 			j += 1
-			print(f"\033[92m{str(map[line][item]).rjust(2)}\033[0m", end=" ")
-		else:
-			print(f"{str(map[line][item]).rjust(2)}", end=" ")
-		k += 1
-	print()
 
-print(j)
+# To see the final map with the path in a graphical way, uncomment the following function call:
+# printing(map, to_print)
+
+print(f'The minimum amount of steps is {j}')
