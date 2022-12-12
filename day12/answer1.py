@@ -1,4 +1,5 @@
 import math
+import tqdm
 
 #Function definition
 
@@ -41,7 +42,7 @@ def in_path(to_print, i, j):
 			return True
 	return False
 
-def printing(map, to_print):
+def printing(map, to_print, start):
 	for line in range(len(map)):
 		for item in range(len(map[line])):
 			if line == start[1] and item == start[0]:
@@ -63,19 +64,22 @@ def all_visited(nodes):
 	return True
 
 def dijkstra(nodes, now):
-	while all_visited(nodes) == False:
-		for node in now['adjacent']:
-			i = select_adjacent(nodes, node[0], node[1])
-			if i > -1:
-				if nodes[i]['distance'] > (now['distance'] + 1):
-					nodes[i]['distance'] = now['distance'] + 1
-					nodes[i]['previous'] = nodes.index(now)
-		nodes[nodes.index(now)]['visited'] = True
-		small = find_smallest(nodes)
-		if small == -1:
-			break
-		now = nodes[small]
-	return nodes
+	added = -3
+	with tqdm.tqdm(total=4138) as pbar:
+		while all_visited(nodes) == False:
+			for node in now['adjacent']:
+				i = select_adjacent(nodes, node[0], node[1])
+				if i > -1:
+					if nodes[i]['distance'] > (now['distance'] + 1):
+						nodes[i]['distance'] = now['distance'] + 1
+						nodes[i]['previous'] = nodes.index(now)
+			nodes[nodes.index(now)]['visited'] = True
+			small = find_smallest(nodes)
+			if small == -1:
+				break
+			now = nodes[small]
+			pbar.update(1)
+		return nodes
 
 # Data ingestion and processing
 with open('input.txt') as file:
@@ -137,6 +141,6 @@ for line in range(len(map)):
 			j += 1
 
 # To see the final map with the path in a graphical way, uncomment the following function call:
-# printing(map, to_print)
+# printing(map, to_print, start)
 
 print(f'The minimum amount of steps is {j}')

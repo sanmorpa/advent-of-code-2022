@@ -62,7 +62,7 @@ def dijkstra(nodes, now):
 		now = nodes[small]
 	return nodes
 
-def length_path(nodes):
+def length_path(nodes, end):
 	final = None
 	for node in nodes:
 		if node['coord']['y'] == end[1] and node['coord']['x'] == end[0]:
@@ -79,6 +79,32 @@ def length_path(nodes):
 			if in_path(to_print, line, item) == True:
 				j += 1
 	return j
+
+def print_smallest_path(map, smallest_nodes, end, start):
+	final = None
+	for node in smallest_nodes:
+		if node['coord']['y'] == end[1] and node['coord']['x'] == end[0]:
+			final = node
+			break
+	to_print = [final]
+	while final['previous'] != None:
+		final = smallest_nodes[final['previous']]
+		to_print.append(final)
+	to_print.append(final)
+
+	for line in range(len(map)):
+		for item in range(len(map[line])):
+			if line == start[1] and item == start[0]:
+				prints = 'S'
+			elif line == end[1] and item == end[0]:
+				prints = 'E'
+			else:
+				prints = chr(map[line][item] + 96)
+			if in_path(to_print, line, item) == True:
+				print(f"\033[92m{prints}\033[0m", end=" ")
+			else:
+				print(f"{prints}", end=" ")
+		print()
 
 # Data ingestion and processing
 with open('input.txt') as file:
@@ -117,6 +143,7 @@ for row in map:
 	added += len(row)
 
 lengths = math.inf
+smallest_nodes = list()
 
 with tqdm.tqdm(total=added) as pbar:
 	for row in range(len(map)):
@@ -128,9 +155,13 @@ with tqdm.tqdm(total=added) as pbar:
 						now = nodes[node]
 						break
 				nodes = dijkstra(nodes, now)
-				length = length_path(nodes)
+				length = length_path(nodes, end)
 				if length < lengths and length > 0:
 					lengths = length
+					smallest_nodes = nodes
 			pbar.update(1)
+
+# To see the final map with the path in a graphical way, uncomment the following function call:
+# print_smallest_path(map, smallest_nodes, end, [column, row])
 
 print(f'The minimum amount of steps is {lengths}')
