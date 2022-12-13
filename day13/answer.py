@@ -1,3 +1,6 @@
+from itertools import zip_longest
+
+
 # Functions definition
 def parse_to_list(s, i=0):
 	result = []
@@ -30,41 +33,35 @@ for line in lines:
 		new_line.append(line)
 signals.append(new_line)
 
-def check_values(s1, s2):
-	for signal1, signal2 in zip(s1, s2):
+def check_values(s1, s2, pair):
+	for signal1, signal2 in zip_longest(s1, s2):
+		if signal1 == None and signal2 != None:
+			return True
+		elif signal2 == None and signal1 != None:
+			return False
 		if isinstance(signal1, list):
 			if isinstance(signal2, list):
-				print(f'New iteration:\nSignal1 list: {signal1}\nSignal2 list: {signal2}\n')
 				if (len(signal1) == 0 and len(signal2) != 0):
-					print('Return True')
 					return True
 				elif (len(signal2) == 0 and len(signal1) != 0):
-					print('Return False')
 					return False
-				return check_values(signal1, signal2)
+				elif (len(signal1) != 0 and len(signal2) != 0):
+					return check_values(signal1, signal2, pair)
 			elif isinstance(signal2, str):
-				print(f'New iteration:\nSignal1 list: {signal1}\nSignal2 str: {signal2}\n')
-				return check_values(signal1, list(signal2))
+				return check_values(signal1, list(signal2), pair)
 		elif isinstance(signal1, str):
 			if isinstance(signal2, list):
-				print(f'New iteration:\nSignal1 str: {signal1}\nSignal2 list: {signal2}\n')
-				return check_values(list(signal1), signal2)
+				return check_values(list(signal1), signal2, pair)
 			elif isinstance(signal2, str):
-				print(f'New iteration:\nSignal1 str: {signal1}\nSignal2 str: {signal2}\n')
 				if int(signal1) < int(signal2):
-					print('Return True')
 					return True
 				elif int(signal1) > int(signal2):
-					print('Return False')
 					return False
 
 total = 0
 for pair in range(len(signals)):
-	pair1 = signals[pair][0][0]
-	pair2 = signals[pair][1][0]
-	print(pair1)
-	print(pair2)
-	if check_values(pair1, pair2) == True:
+	pair1 = signals[pair][0]
+	pair2 = signals[pair][1]
+	if check_values(pair1, pair2, pair) == True:
 		total += (pair + 1)
-	print()
 print(f"The total is {total}")
