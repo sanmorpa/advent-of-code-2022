@@ -16,7 +16,7 @@
 | 10  | [Cathode-Ray Tube](https://adventofcode.com/2022/day/10)        | :star::star: |
 | 11  | [Monkey in the Middle](https://adventofcode.com/2022/day/11)    | :star::star: |
 | 12  | [Hill Climbing Algorithm](https://adventofcode.com/2022/day/12) | :star::star: |
-| 13  | TBA        |
+| 13  | [Distress Signal](https://adventofcode.com/2022/day/13)         | :star::star: |
 | 14  | TBA        |
 | 15  | TBA        |
 | 16  | TBA        |
