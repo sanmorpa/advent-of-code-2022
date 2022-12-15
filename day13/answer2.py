@@ -1,5 +1,6 @@
 from itertools import zip_longest
 
+
 # Function definition
 def check_values(s1, s2):
 	for signal1, signal2 in zip_longest(s1, s2):

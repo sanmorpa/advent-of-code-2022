@@ -18,7 +18,7 @@
 | 12  | [Hill Climbing Algorithm](https://adventofcode.com/2022/day/12) | :star::star: |
 | 13  | [Distress Signal](https://adventofcode.com/2022/day/13)         | :star::star: |
 | 14  | [Regolith Reservoir](https://adventofcode.com/2022/day/14)      | :star::star: |
-| 15  | TBA        |
+| 15  | [Beacon Exclusion Zone](https://adventofcode.com/2022/day/15)   | :star:       |
 | 16  | TBA        |
 | 17  | TBA        |
 | 18  | TBA        |

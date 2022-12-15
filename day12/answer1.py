@@ -1,8 +1,9 @@
 import math
+
 import tqdm
 
-#Function definition
 
+#Function definition
 def find_adjacent(map, i, j):
 	adjacents = list()
 	k = i - 1
