@@ -46,5 +46,5 @@ mkdir ${name}
 aocd > "${name}/input.txt"
 touch "${name}/answer.py"
 echo "# Data ingestion and processing" >> "${name}/answer.py"
-echo "with open('input.txt') as file:" >> "${name}/answer.py"
+echo "with open('${name}/input.txt') as file:" >> "${name}/answer.py"
 echo "	lines = [line.rstrip() for line in file]" >> "${name}/answer.py"
